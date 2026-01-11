@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}{{ genre }}{% endblock %}
+{% block content %}
+<form action="{{ url_for('movie_search') }}" class="d-flex align-items-center bg-transparent p-2 rounded py-3 pb-4">
+  <div class="me-2">
+    <img src="{{ url_for('static', filename='search.svg') }}" alt="search-icon" class="search-icon">
+  </div>
+
+  <div class="flex-grow-1 d-flex">
+    <input type="text" placeholder="Search for TV Series here" name="search"
+      class="form-control bg-transparent text-white border-light me-2">
+    <button type="submit" class="btn btn-outline-light">Search</button>
+  </div>
+</form>
+
+<section>
+  <div class="section-heading">
+    <div class="title">
+      <h3 class="title-big-text">{{ genre }}</h3>
+    </div>
+  </div>
+
+  <ul class="movie-list row g-4">
+    {% for movie in movies.results %}
+    <li class="col-lg-4 col-md-6 col-sm-12">
+      <a href="{{ url_for('movie_item', id=movie.id)}}">
+        <div class="img-container mb-2">
+          <img class="img-backdrop" src="{{ IMG_URL }}{{ movie.backdrop_path }}" alt="{{ movie.original_title }}"
+            class="img-fluid">
+        </div>
+        <div class="movie-info">
+          <div class="d-flex align-items-center mb-2">
+            <small>{{ movie.release_date | format_year }}</small>
+            <i class="fa-solid fa-circle mx-2"></i>
+            <i class="fa-solid fa-film"></i>
+            <small class="small-text ms-2">Movie</small>
+          </div>
+          <h5 class="movie-title">{{ movie.original_title }}</h5>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-2">
+    <ul class="pagination">
+      {% if current_page > 1 %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('movie_genre', genre=genre ,id=id, page=current_page - 1) }}">Previous</a>
+      </li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="#">Page {{ current_page }} of {{ total_pages }} </a></li>
+
+      {% if current_page < total_pages %} <li class="page-item">
+        <a class="page-link" href="{{ url_for('movie_genre', genre=genre, id=id, page=current_page + 1) }}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+  </nav>
+
+  {% endblock %}

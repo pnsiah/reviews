@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}TV Series{% endblock %}
+{% block content %}
+<form action="{{ url_for('tv_search') }}" class="d-flex align-items-center bg-transparent p-2 rounded py-3 pb-4"
+  method="post">
+  <div class="me-2">
+    <img src="{{ url_for('static', filename='search.svg') }}" alt="search-icon" class="search-icon">
+  </div>
+
+  <div class="flex-grow-1 d-flex">
+    <input type="text" placeholder="Search for TV Series here" name="search_term"
+      class="form-control bg-transparent text-white border-light me-2" />
+    <button type="submit" class="btn btn-outline-light">Search</button>
+  </div>
+</form>
+<ul class="genres">
+  {% for genre in genres %}
+  <li class="genre-item">
+    <a href="{{ url_for('tv_genre', genre=genre.name, id=genre.id)}}">
+      {{ genre.name }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

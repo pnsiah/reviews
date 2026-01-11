@@ -1,0 +1,16 @@
+{% extends "form_layout.html" %}
+{% block title %}Login Page{% endblock %}
+{% block content %}
+<section class="form-body">
+  <h1 class="title">Login</h1>
+  <form class="form-control" method="post">
+    <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+    <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+    <button type="submit">Login</button>
+    <h2 class="text-muted">Don't have an account? <a href="{{ url_for('register')}}">Register</a></h2>
+  </form>
+</section>
+
+{% endblock %}

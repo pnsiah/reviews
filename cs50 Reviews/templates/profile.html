@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}{{ Profile }}{% endblock %}
+{% block content %}
+<div class="content-section profile-section py-3">
+  <div class="media">
+    <img class="rounded-circle account-img" src="{% if user_data.image_file %}
+        {{ url_for('static', filename='profile_pictures/' + user_data.image_file)}}
+         {% else %}
+         {{ url_for('static', filename='profile_pictures/' + 'default.jpg' )}}
+        {% endif %}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ user_data.username }}</h2>
+      <p class="text-secondary">{{ user_data.email }}</p>
+    </div>
+  </div>
+  <form class="profile-form" method="POST" action="" enctype="multipart/form-data">
+    <fieldset class="form-group">
+      <legend class="border-bottom mb-4">Account Info</legend>
+      <div class="form-group">
+        <label class="profile-form-label form-control-label" for="username">Username</label>
+        <input type="text" id="username" class="form-control input" name="username" value="{{ user_data.username }}">
+      </div>
+      <div class="form-group">
+        <label class="profile-form-label form-control-label" for="email">Email</label class="profile-form-label">
+        <input type="email" id="email" class="form-control input" name="email" value="{{ user_data.email }}">
+      </div>
+      <div class="form-group file">
+        <label class="profile-form-label" for="picture">Profile Picture</label>
+        <input type="file" class="form-control-file" id="picture" name="profile_pic">
+      </div>
+    </fieldset>
+    <div class="form-group">
+      <button type="submit" class="btn btn-outline-info">Submit</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

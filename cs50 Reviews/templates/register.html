@@ -1,0 +1,19 @@
+{% extends "form_layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<section class="form-body">
+  <h3 class="title">Sign Up</h3>
+  <form class="form-control" method="post">
+    <input type="text" id="username" name="username" placeholder="Enter your username" />
+
+    <input type="email" id="email" name="email" placeholder="Enter your email" />
+
+    <input type="password" id="password" name="password" placeholder="Enter your password" />
+
+    <input type="password" id="confirm-password" name="confirmation" placeholder="Confirm password" />
+
+    <button type="submit">Sign Up</button>
+    <h2 class="text-muted">Already have an account? <a href="/login">Login</a></h2>
+  </form>
+</section>
+{% endblock %}

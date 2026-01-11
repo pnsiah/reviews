@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}{{ movie_data.original_name }}{% endblock %}
+{% block content %}
+<section class="movie-item py-3 ">
+  <div class="item-img">
+    <img
+      src="{% if movie_data.poster_path %}{{ IMG_URL }}{{ movie_data.poster_path }}{% else %}{{ url_for('static', filename='movie_default.jpg') }}{% endif %}"
+      alt="{{ movie_data.title }}" class="img-fluid" />
+  </div>
+  <div class="movie_info">
+    <div class="movie-item__title">
+      <div class="title_heading">
+        <div>
+          <h3>{{ movie_data.original_name }}</h3>
+          <p>{{ movie_data.tagline }}</p>
+        </div>
+        <div class="rating">
+          <div class="rating-value">{{ movie_data.vote_average }}</div>
+          <div class="star-rating">
+            {% for star in stars %}
+            <div class="star {{ star }}"></div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <!-- Button to trigger offcanvas -->
+      <button class="btn btn-primary add-review" data-bs-toggle="offcanvas" data-bs-target="#offcanvasForm"
+        aria-controls="offcanvasForm">
+        Add Review
+      </button>
+    </div>
+    <div class="more-info">
+      <div class="info-section">
+        <h4 class="heading">Language</h4>
+        <p class="info-value">{{ movie_data.original_language }}</p>
+      </div>
+      <div class="info-section">
+        <h4 class="heading">First Air </h4>
+        <p class="info-value">{{ movie_data.first_air_date }}</p>
+      </div>
+      <div class="info-section">
+        <h4 class="heading">Year</h4>
+        <p class="info-value">{{ movie_data.last_air_date }}</p>
+      </div>
+      <div class="info-section">
+        <h4 class="heading">Status</h4>
+        <p class="info-value">{{ movie_data.status }}</p>
+      </div>
+    </div>
+    <div class="genre-section">
+      <h3 class="genre-titles">Genres</h3>
+      {% for genre in movie_data.genres %}
+      <p class="genre">{{ genre.name }}</p>
+      {% endfor %}
+    </div>
+    <div class="section-synopsis">
+      <h2>Synopsis</h2>
+      <p>{{ movie_data.overview }}</p>
+    </div>
+  </div>
+</section>
+<!-- Form inside Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasFormLabel">Add a Review for {{ movie_data.title }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Movie Title and Poster -->
+    <div class="text-center mb-4">
+      <img src="{{ IMG_URL }}{{ movie_data.poster_path }}" alt="{{ movie_data.title }}" class="img-fluid mb-2 rounded"
+        style="max-height: 120px;">
+      <hr class="my-2">
+      <h5 class="font-weight-bold">{{ movie_data.title }}</h5>
+    </div>
+    <form method="post">
+      <!-- Review Section -->
+      <fieldset class="p-4 mb-4 rounded">
+        <legend class="font-weight-bold"
+          style="text-transform: uppercase; font-size: 1rem; background-color: #e2e2e2; padding: 5px 10px; width:100%;">
+          Your Review</legend>
+        <div class="mb-3">
+          <label for="review_title" class="form-label">Review Title</label>
+          <input name="title" type="text" class="form-control form-control-lg border-primary" id="review_title"
+            placeholder="Write your title here" required>
+        </div>
+        <div class="mb-3 d-flex justify-content-between">
+          <label for="review" class="form-label">Review</label>
+          <small class="d-block text-muted mb-1" style="font-style: italic;">Required characters: 100</small>
+        </div>
+        <textarea class="form-control form-control-lg border-primary" name="content" id="review" rows="5"
+          placeholder="Write your review here" required style="width: 100%;"></textarea>
+      </fieldset>
+
+      <button type="submit" class="btn btn-success w-100 py-2">Submit</button>
+    </form>
+  </div>
+</div>
+<section>
+  {% if reviews %}
+  {% for review in reviews %}
+  <article class="media content-section">
+    <!-- Profile Picture -->
+    <img class="rounded-circle article-img"
+      src="{{ url_for('static', filename='profile_pictures/' + review.profile_pic) }}" alt="Profile Picture"
+      style="width: 50px; height: 50px; object-fit: cover;">
+
+    <div class="media-body">
+      <div class="article-metadata">
+        <!-- Username with custom styling -->
+        <a class="mr-2 username-link" href="#">
+          {{ review.username }}
+        </a>
+        <small class="text-muted">{{ review.created_at }}</small>
+      </div>
+
+      <h2 class="article-title">{{ review.title }}</h2>
+      <p class="article-content">{{ review.content }}</p>
+    </div>
+  </article>
+  {% endfor %}
+  {% else %}
+
+  <div class="no-reviews">
+    <p>No reviews yet</p>
+  </div>
+
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<form action="{{ url_for('multi_search') }}" class="d-flex align-items-center bg-transparent p-2 rounded" method="post">
+  <div class="me-2">
+    <img src="{{ url_for('static', filename='search.svg') }}" alt="search-icon" class="search-icon">
+  </div>
+
+  <div class="flex-grow-1 d-flex">
+    <input type="text" placeholder="Search for Movies or TV Series" name="search_term"
+      class="form-control bg-transparent text-white border-light me-2">
+    <button type="submit" class="btn btn-outline-light">Search</button>
+  </div>
+</form>
+<section class="carousel">
+  <div class="section-heading">
+    <div class="title">
+      <h3 class="title-big-text">Trending</h3>
+      <span class="title-small-text">MOVIES</span>
+    </div>
+    <div class="see-more">
+      <a href="#">See more</a>
+    </div>
+  </div>
+
+  <ul class="media-group">
+    {% for movie in trending_movies.results %}
+    <li class="media-element">
+      <a href="{{ url_for('movie_item', id=movie.id )}}">
+        <div class="movie-image">
+          <img
+            src="{% if movie.backdrop_path %}{{ IMG_URL }}{{ movie.backdrop_path }}{% else %}{{ url_for('static', filename='movie_default.jpg'), }}{% endif %}"
+            alt="{{ movie.original_title }}">
+          <div class="media-info">
+            <div class="top">
+              <small class="top__date">{{ movie.release_date | format_year }}</small>
+              <i class="fa-solid fa-circle"></i>
+              <i class="fa-solid fa-film"></i>
+              <small class="small-text">Movie</small>
+            </div>
+            <div class="movie-title">
+              <h5 class="movie-title-text">{{ movie.original_title }}</h5>
+            </div>
+          </div>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+<section>
+  <div class="section-heading">
+    <div class="title">
+      <h3 class="title-big-text">Popular</h3>
+      <span class="title-small-text">MOVIES</span>
+    </div>
+    <div class="see-more">
+      <a href="#">See more</a>
+    </div>
+  </div>
+
+  <ul class="movie-list row g-4">
+    {% for movie in popular_movies.results %}
+    <li class="col-lg-4 col-md-6 col-sm-12">
+      <a href="{{ url_for('movie_item', id=movie.id )}}">
+        <div class="img-container mb-2">
+          <img class="img-backdrop" src="{{ IMG_URL }}{{ movie.backdrop_path }}" alt="{{ movie.original_title }}"
+            class="img-fluid">
+        </div>
+        <div class="movie-info">
+          <div class="d-flex align-items-center mb-2">
+            <small>{{ movie.release_date | format_year }}</small>
+            <i class="fa-solid fa-circle mx-2"></i>
+            <i class="fa-solid fa-film"></i>
+            <small class="small-text ms-2">Movie</small>
+          </div>
+          <h5 class="movie-title">{{ movie.original_title }}</h5>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+</section>
+
+{% endblock%}
